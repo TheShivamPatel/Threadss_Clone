@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "71978769463",
+    "project_id": "threadss-clone",
+    "storage_bucket": "threadss-clone.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:71978769463:android:21ff4e0a75d8f66a5273b2",
+        "android_client_info": {
+          "package_name": "com.example.threadss"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "71978769463-1qeb2kg4ef51jk78ps95ahurchc25lm9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBJlgSiSwT6sHnzQdve5SVNVpHX55sMXPU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "71978769463-1qeb2kg4ef51jk78ps95ahurchc25lm9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

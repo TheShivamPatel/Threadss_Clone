@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_marginTop="12dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_marginStart="5dp">
+
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/user_image"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:padding="2dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/person_imageholder"
+                app:shapeAppearanceOverlay="@style/Circle"
+                app:strokeColor="@color/gray"
+                app:strokeWidth="1dp"/>
+
+            <View
+                android:layout_width="3dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:background="@color/light_gray"
+                android:layout_marginTop="5dp"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:orientation="vertical"
+            android:layout_marginEnd="5dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/user_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="username"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    android:fontFamily="@font/open_sans_semibold"
+                    android:layout_weight="8"/>
+
+                <TextView
+                    android:id="@+id/created_at"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="15dp"
+                    android:layout_weight="12"
+                    android:text="time ago"
+                    android:gravity="center"
+                    android:textSize="12dp"
+                    android:textColor="@color/gray"
+                    />
+
+                <ImageView
+                    android:id="@+id/more_btn"
+                    android:layout_width="match_parent"
+                    android:layout_height="22dp"
+                    android:src="@drawable/baseline_more_horiz_24"
+                    android:layout_gravity=""
+                    android:layout_weight="17"/>
+
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/txt_caption"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="This is sample description."
+                android:textColor="@color/black"
+                android:fontFamily="@font/open_sans"
+                android:textSize="14sp"/>
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/post_img"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxHeight="250dp"
+                android:adjustViewBounds="true"
+                android:layout_marginTop="20dp"
+                android:visibility="gone"
+                android:scaleType="centerCrop"
+                app:shapeAppearanceOverlay="@style/Smooth_corners"/>>
+
+<!--            <androidx.recyclerview.widget.RecyclerView-->
+<!--                android:id="@+id/multi_image_rv"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="200dp"-->
+<!--                android:layout_marginTop="20dp"-->
+<!--                android:layout_marginEnd="20dp"-->
+<!--                android:visibility="gone">-->
+<!--            </androidx.recyclerview.widget.RecyclerView>-->
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="7dp">
+
+                <ImageView
+                    android:id="@+id/like_btn"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:src="@drawable/like_off"
+                    android:layout_marginEnd="10dp"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="likes"
+                    android:textColor="@color/gray"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/open_sans"
+                    android:textSize="12sp"/>
+
+                <ImageView
+                    android:id="@+id/share_btn"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:src="@drawable/send"
+                    android:rotation="15"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginTop="20dp"
+        android:background="@color/light_gray" />
+
+
+</LinearLayout>
