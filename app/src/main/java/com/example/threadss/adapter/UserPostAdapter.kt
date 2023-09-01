@@ -12,11 +12,18 @@ import com.example.threadss.R
 import com.example.threadss.databinding.PostItemLayoutBinding
 import com.example.threadss.models.Post
 import com.example.threadss.utils.GetTimeAgo
+import com.example.threadss.utils.IMAGE_HOLDER
+import com.example.threadss.utils.POST_NODE
 import com.example.threadss.utils.USER_NODE
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
-class UserPostAdapter(private val context: Context, private val list: ArrayList<Post>) :
+class UserPostAdapter(
+    private val context: Context,
+    private val list: ArrayList<Post>
+) :
     RecyclerView.Adapter<UserPostAdapter.posttViewHolder>() {
     inner class posttViewHolder(val postBinding: PostItemLayoutBinding) :
         RecyclerView.ViewHolder(postBinding.root)
@@ -27,17 +34,19 @@ class UserPostAdapter(private val context: Context, private val list: ArrayList<
     }
 
     override fun onBindViewHolder(holder: posttViewHolder, position: Int) {
-        val post = list[position]
+        var post = list[position]
+
         holder.postBinding.txtCaption.text = post.caption
         holder.postBinding.createdAt.text = GetTimeAgo.getTimeAgo(post.createdAt)
+        holder.postBinding.likeTxt.text = "${post.likeBy.size} likes"
 
-
-        holder.postBinding.likeBtn.setOnClickListener {
-            holder.postBinding.likeBtn.setImageResource(R.drawable.red_heart)
+        if ( post.image != IMAGE_HOLDER){
+            holder.postBinding.postImg.visibility = View.VISIBLE
+            Glide.with(context).load(post.image).thumbnail(Glide.with(context).load(R.drawable.loading)).into(holder.postBinding.postImg)
         }
 
-        val user = post.postedBy
 
+        val user = post.postedBy
         Firebase.firestore.collection(USER_NODE).document(user.toString()).get()
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
@@ -45,11 +54,6 @@ class UserPostAdapter(private val context: Context, private val list: ArrayList<
                     if (doc.exists()) {
                         val name = doc.getString("userName")
                         val profile = doc.getString("userProfile")
-
-                        holder.postBinding.likeBtn.setOnClickListener {
-                            holder.postBinding.likeBtn.setImageResource(R.drawable.red_heart)
-                            Toast.makeText(context, "Currently I am not working!" , Toast.LENGTH_SHORT).show()
-                        }
                         holder.postBinding.userName.text = name
                         Glide.with(context).load(profile).into(holder.postBinding.userImage)
 
@@ -57,12 +61,41 @@ class UserPostAdapter(private val context: Context, private val list: ArrayList<
                 }
             }
 
-        holder.postBinding.userName.text = user
+
+        val currentUser = FirebaseAuth.getInstance().currentUser!!.uid
+        val isLiked = post.likeBy.contains(currentUser)
+
+        if (isLiked == true) {
+            holder.postBinding.likeBtn.setImageResource(R.drawable.red_heart)
+        }
+
+        // database instance
+        val db = Firebase.firestore
+        val currentPost = db.collection(POST_NODE).document(post.postDocID!!)
+//
+//        // like button on click
+        holder.postBinding.likeBtn.setOnClickListener {
+
+                if (list[position].likeBy.contains(currentUser)) {
+                    currentPost.update("likeBy", FieldValue.arrayRemove(currentUser))
+                    holder.postBinding.likeBtn.setImageResource(R.drawable.like_off)
+                    Toast.makeText(context, "Like Removed", Toast.LENGTH_SHORT).show()
+                } else {
+                    currentPost.update("likeBy", FieldValue.arrayUnion(currentUser))
+                    holder.postBinding.likeBtn.setImageResource(R.drawable.red_heart)
+                    Toast.makeText(context, "Liked", Toast.LENGTH_SHORT).show()
+                }
+
+        }
+
 
         holder.postBinding.shareBtn.setOnClickListener {
-            val sendIntent : Intent = Intent().apply {
+            val sendIntent: Intent = Intent().apply {
                 action = Intent.ACTION_SEND
-                putExtra(Intent.EXTRA_TEXT, "${post.caption} - Download Threadss app for more such content.")
+                putExtra(
+                    Intent.EXTRA_TEXT,
+                    "${post.caption} - Download Threadss app for more such content."
+                )
                 type = "text/plain"
             }
             val shareIntent = Intent.createChooser(sendIntent, null)

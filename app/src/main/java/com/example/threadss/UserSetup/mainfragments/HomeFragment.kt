@@ -6,22 +6,28 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView.LayoutManager
 import com.example.threadss.R
+import com.example.threadss.daos.PostDao
 import com.example.threadss.adapter.UserPostAdapter
 import com.example.threadss.databinding.FragmentHomeBinding
 import com.example.threadss.models.Post
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.DocumentReference
+import com.google.firebase.firestore.FieldValue
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
 
-
     private lateinit var dialog: Dialog
+    private lateinit var postDao: PostDao
+
 
 
     override fun onCreateView(
@@ -37,40 +43,42 @@ class HomeFragment : Fragment() {
         dialog.getWindow()?.setBackgroundDrawableResource(android.R.color.transparent);
         dialog.setCancelable(false)
 
-        setUpRecyclerView()
+        lifecycleScope.launch {
+            setUpRecyclerView()
+        }
 
 
         return binding.root
     }
 
-
     private fun setUpRecyclerView() {
+
 
         dialog.show()
 
-        val tempList = ArrayList<Post>()
+
+        postDao = PostDao()
+        val postsCollections = postDao.postCollections
+
         val list = ArrayList<Post>()
 
-        Firebase.firestore.collection("posts")
-            .get().addOnSuccessListener {
-                list.clear()
-                tempList.clear()
-                for (doc in it.documents) {
-                    val data = doc.toObject(Post::class.java)
-                    list.add(data!!)
-                }
-                tempList.addAll(list)
-
-                tempList.sortByDescending {
-                    it.createdAt
-                }
-
-                binding.rv.adapter = UserPostAdapter(requireContext() ,tempList)
-                binding.rv.layoutManager = LinearLayoutManager(context)
-
-                dialog.dismiss()
+        postsCollections.get().addOnSuccessListener {
+            list.clear()
+            for (doc in it.documents) {
+                val data = doc.toObject(Post::class.java)
+                list.add(data!!)
             }
+
+            list.sortByDescending {
+                it.createdAt
+            }
+
+            binding.rv.adapter = UserPostAdapter(requireContext(), list)
+            binding.rv.layoutManager = LinearLayoutManager(context)
+            dialog.dismiss()
+        }
     }
+
 
 
     override fun onDestroyView() {

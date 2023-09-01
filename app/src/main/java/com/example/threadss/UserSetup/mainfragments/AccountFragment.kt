@@ -6,16 +6,22 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.threadss.R
+import com.example.threadss.daos.PostDao
 import com.example.threadss.adapter.UserPostAdapter
 import com.example.threadss.databinding.FragmentAccountBinding
 import com.example.threadss.models.Post
 import com.example.threadss.utils.USER_NODE
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.DocumentReference
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class AccountFragment : Fragment() {
 
@@ -24,6 +30,9 @@ class AccountFragment : Fragment() {
 
     private var name: String? = null
     private var profile: String? = null
+    private lateinit var postDao: PostDao
+
+
 
     private lateinit var dialog: Dialog
 
@@ -70,26 +79,33 @@ class AccountFragment : Fragment() {
 
         dialog.show()
 
+        postDao = PostDao()
+        val postsCollections = postDao.postCollections
+
         val list = ArrayList<Post>()
 
-        Firebase.firestore.collection("posts")
-            .get().addOnSuccessListener {
-                list.clear()
-                for (doc in it.documents) {
+        postsCollections.get().addOnSuccessListener {
+            list.clear()
+            for (doc in it.documents) {
 
-                    val data = doc.toObject(Post::class.java)
+                val data = doc.toObject(Post::class.java)
 
-                    if (data!!.postedBy.equals(firebaseAuth.currentUser!!.uid)){
-                        list.add(data!!)
-                    }
+                if (data!!.postedBy.equals(firebaseAuth.currentUser!!.uid)) {
+                    list.add(data!!)
                 }
-                binding.userPostRv.adapter = UserPostAdapter(requireContext(), list)
-                binding.userPostRv.layoutManager = LinearLayoutManager(context)
-
-                dialog.dismiss()
             }
+            list.sortByDescending {
+                it.createdAt
+            }
+            binding.userPostRv.adapter = UserPostAdapter(requireContext(), list)
+            binding.userPostRv.layoutManager = LinearLayoutManager(context)
+
+            dialog.dismiss()
+        }
 
     }
+
+
 
 
 }
