@@ -1,27 +1,28 @@
 package com.example.threadss.UserSetup.mainfragments
 
 import android.app.Dialog
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.threadss.R
+import com.example.threadss.activities.SplashScreen
+import com.example.threadss.adapter.FireAdapter
 import com.example.threadss.daos.PostDao
 import com.example.threadss.adapter.UserPostAdapter
 import com.example.threadss.databinding.FragmentAccountBinding
 import com.example.threadss.models.Post
 import com.example.threadss.utils.USER_NODE
+import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.DocumentReference
-import com.google.firebase.firestore.FieldValue
+import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 
 class AccountFragment : Fragment() {
 
@@ -32,9 +33,10 @@ class AccountFragment : Fragment() {
     private var profile: String? = null
     private lateinit var postDao: PostDao
 
-
+    private lateinit var myAdapter: FireAdapter
 
     private lateinit var dialog: Dialog
+    private lateinit var logOutDialog: Dialog
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,11 +44,12 @@ class AccountFragment : Fragment() {
     ): View? {
         binding = FragmentAccountBinding.inflate(layoutInflater)
 
-        // dialog box
+        // progress dialog box
         dialog = Dialog(requireContext())
         dialog.setContentView(R.layout.progress_layout)
-        dialog.getWindow()?.setBackgroundDrawableResource(android.R.color.transparent);
+        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent);
         dialog.setCancelable(false)
+
 
 
         firebaseAuth = FirebaseAuth.getInstance()
@@ -68,12 +71,15 @@ class AccountFragment : Fragment() {
 
             }
 
-
         getCategoryFromFirebase()
+
+        binding.logoutBtn.setOnClickListener {
+            // dialog box
+            showLogoutDialog()
+        }
 
         return binding.root
     }
-
 
     private fun getCategoryFromFirebase() {
 
@@ -106,6 +112,28 @@ class AccountFragment : Fragment() {
     }
 
 
+    private fun showLogoutDialog() {
+        logOutDialog = Dialog(requireContext())
+        logOutDialog.setContentView(R.layout.logout_layout)
+        logOutDialog.getWindow()?.setBackgroundDrawableResource(android.R.color.transparent);
+        logOutDialog.setCancelable(false)
+        logOutDialog.show()
+
+        val logoutTxt: TextView = logOutDialog.findViewById(R.id.logout_text)
+        val cancelTxt: TextView = logOutDialog.findViewById(R.id.cancel_text)
+
+        logoutTxt.setOnClickListener {
+            FirebaseAuth.getInstance().signOut()
+            startActivity(Intent(requireContext(), SplashScreen::class.java))
+            activity?.finish()
+        }
+
+        cancelTxt.setOnClickListener {
+            logOutDialog.dismiss()
+        }
+
+
+    }
 
 
 }

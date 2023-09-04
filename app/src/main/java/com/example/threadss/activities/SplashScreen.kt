@@ -1,11 +1,12 @@
-package com.example.threadss
+package com.example.threadss.activities
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import androidx.navigation.fragment.findNavController
+import com.example.threadss.MainActivity
+import com.example.threadss.R
 import com.example.threadss.UserSetup.ProfileSetUpActivity
 import com.google.firebase.auth.FirebaseAuth
 

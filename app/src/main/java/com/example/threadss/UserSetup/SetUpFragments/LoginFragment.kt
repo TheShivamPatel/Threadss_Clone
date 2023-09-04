@@ -7,13 +7,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.navigation.fragment.findNavController
-import com.example.threadss.MainActivity
-import com.example.threadss.R
+import com.example.threadss.activities.SplashScreen
 import com.example.threadss.databinding.FragmentLoginBinding
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.ktx.Firebase
 
 class LoginFragment : Fragment() {
 
@@ -60,7 +57,7 @@ class LoginFragment : Fragment() {
 
                     val verify = auth.currentUser?.isEmailVerified
                     if (verify == true) {
-                        startActivity(Intent(requireContext(), MainActivity::class.java))
+                        startActivity(Intent(requireContext(), SplashScreen::class.java))
                         activity?.finish()
                         Toast.makeText(context, "Login successfully", Toast.LENGTH_SHORT).show()
                     } else {

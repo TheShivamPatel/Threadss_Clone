@@ -5,6 +5,7 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Adapter
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -72,7 +73,7 @@ class UserPostAdapter(
         // database instance
         val db = Firebase.firestore
         val currentPost = db.collection(POST_NODE).document(post.postDocID!!)
-//
+
 //        // like button on click
         holder.postBinding.likeBtn.setOnClickListener {
 
@@ -101,7 +102,6 @@ class UserPostAdapter(
             val shareIntent = Intent.createChooser(sendIntent, null)
             context.startActivity(shareIntent)
         }
-
 
     }
 

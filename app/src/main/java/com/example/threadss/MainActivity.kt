@@ -6,9 +6,11 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
 import com.example.threadss.databinding.ActivityMainBinding
 
+
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -17,7 +19,6 @@ class MainActivity : AppCompatActivity() {
 
         val navController = findNavController(R.id.fragment)
         NavigationUI.setupWithNavController(binding.bottomNavigationView, navController)
-
 
 
     }

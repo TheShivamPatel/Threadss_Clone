@@ -6,18 +6,16 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.threadss.R
+import com.example.threadss.adapter.FireAdapter
 import com.example.threadss.daos.PostDao
 import com.example.threadss.adapter.UserPostAdapter
 import com.example.threadss.databinding.FragmentHomeBinding
 import com.example.threadss.models.Post
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.DocumentReference
-import com.google.firebase.firestore.FieldValue
-import kotlinx.coroutines.GlobalScope
+import com.firebase.ui.firestore.FirestoreRecyclerOptions
+import com.google.firebase.firestore.Query
 import kotlinx.coroutines.launch
 
 class HomeFragment : Fragment() {
@@ -28,7 +26,7 @@ class HomeFragment : Fragment() {
     private lateinit var dialog: Dialog
     private lateinit var postDao: PostDao
 
-
+    private lateinit var myAdapter: FireAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,49 +35,48 @@ class HomeFragment : Fragment() {
         // Inflate the layout for this fragment
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
 
+
         // dialog box
         dialog = Dialog(requireContext())
         dialog.setContentView(R.layout.progress_layout)
-        dialog.getWindow()?.setBackgroundDrawableResource(android.R.color.transparent);
+        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent);
         dialog.setCancelable(false)
 
         lifecycleScope.launch {
-            setUpRecyclerView()
+            setRecy()
         }
 
 
         return binding.root
     }
-
-    private fun setUpRecyclerView() {
-
+    private fun setRecy() {
 
         dialog.show()
 
 
         postDao = PostDao()
         val postsCollections = postDao.postCollections
+        val query = postsCollections.orderBy("createdAt", Query.Direction.DESCENDING)
+        val recyclerViewOptions =
+            FirestoreRecyclerOptions.Builder<Post>().setQuery(query, Post::class.java).build()
 
-        val list = ArrayList<Post>()
+        myAdapter = FireAdapter(recyclerViewOptions, requireContext())
 
-        postsCollections.get().addOnSuccessListener {
-            list.clear()
-            for (doc in it.documents) {
-                val data = doc.toObject(Post::class.java)
-                list.add(data!!)
-            }
+        binding.rv.adapter = myAdapter
+        binding.rv.layoutManager = LinearLayoutManager(requireContext())
 
-            list.sortByDescending {
-                it.createdAt
-            }
-
-            binding.rv.adapter = UserPostAdapter(requireContext(), list)
-            binding.rv.layoutManager = LinearLayoutManager(context)
-            dialog.dismiss()
-        }
+        dialog.dismiss()
     }
 
+    override fun onStart() {
+        super.onStart()
+        myAdapter.startListening()
+    }
 
+    override fun onStop() {
+        super.onStop()
+        myAdapter.stopListening()
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()
