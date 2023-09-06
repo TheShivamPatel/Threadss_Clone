@@ -5,14 +5,14 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.threadss.DetailProfileActivity
 import com.example.threadss.R
 import com.example.threadss.databinding.PostItemLayoutBinding
 import com.example.threadss.models.Post
+import com.example.threadss.utils.DUMMY_IMAGE
 import com.example.threadss.utils.GetTimeAgo
-import com.example.threadss.utils.IMAGE_HOLDER
 import com.example.threadss.utils.POST_NODE
 import com.example.threadss.utils.USER_NODE
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
@@ -42,7 +42,7 @@ class FireAdapter(options: FirestoreRecyclerOptions<Post>, val context: Context)
             likeTxt.text = "${model.likeBy.size} likes"
 
 
-            if (model.image != IMAGE_HOLDER) {
+            if (model.image != DUMMY_IMAGE) {
                 postImg.visibility = View.VISIBLE
                 Glide.with(context).load(model.image)
                     .thumbnail(Glide.with(context).load(R.drawable.loading)).into(postImg)
@@ -59,7 +59,6 @@ class FireAdapter(options: FirestoreRecyclerOptions<Post>, val context: Context)
                             val profile = doc.getString("userProfile")
                             userName.text = name
                             Glide.with(context).load(profile).into(userImage)
-
                         }
                     }
                 }
@@ -69,8 +68,9 @@ class FireAdapter(options: FirestoreRecyclerOptions<Post>, val context: Context)
 
             if (isLiked) {
                 likeBtn.setImageResource(R.drawable.red_heart)
+            } else {
+                likeBtn.setImageResource(R.drawable.like_off)
             }
-
 
             // database instance
             val db = Firebase.firestore
@@ -81,12 +81,8 @@ class FireAdapter(options: FirestoreRecyclerOptions<Post>, val context: Context)
 
                 if (isLiked) {
                     currentPost.update("likeBy", FieldValue.arrayRemove(currentUser))
-                    likeBtn.setImageResource(R.drawable.like_off)
-                    Toast.makeText(context, "Like Removed", Toast.LENGTH_SHORT).show()
                 } else {
                     currentPost.update("likeBy", FieldValue.arrayUnion(currentUser))
-                    likeBtn.setImageResource(R.drawable.red_heart)
-                    Toast.makeText(context, "Liked", Toast.LENGTH_SHORT).show()
                 }
 
             }
@@ -106,6 +102,11 @@ class FireAdapter(options: FirestoreRecyclerOptions<Post>, val context: Context)
                 context.startActivity(shareIntent)
             }
 
+            userImage.setOnClickListener {
+                val intent = Intent(context, DetailProfileActivity::class.java)
+                intent.putExtra("id", model.postedBy)
+                context.startActivity(intent)
+            }
 
         }
     }

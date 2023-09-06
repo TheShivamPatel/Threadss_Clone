@@ -40,7 +40,6 @@ class RegistrationFragment : Fragment() {
                 imageUri = uri
                 binding.profileImage.setImageURI(uri)
                 Toast.makeText(activity, "Image Set!", Toast.LENGTH_SHORT).show()
-
             } else {
                 Toast.makeText(activity, "Error in picking image!", Toast.LENGTH_SHORT).show()
             }
@@ -58,7 +57,7 @@ class RegistrationFragment : Fragment() {
         // dialog box
         dialog = Dialog(requireContext())
         dialog.setContentView(R.layout.progress_layout)
-        dialog.getWindow()?.setBackgroundDrawableResource(android.R.color.transparent);
+        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent);
         dialog.setCancelable(false)
 
 
@@ -68,6 +67,8 @@ class RegistrationFragment : Fragment() {
             // Launch the photo picker and let the user choose only images.
             pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
         }
+
+
 
 
         // Initialize Firebase Auth
@@ -80,7 +81,7 @@ class RegistrationFragment : Fragment() {
             val pass = binding.passwordEdt.text.toString().trim()
             val verifyPass = binding.confirmPasswordEdt.text.toString().trim()
 
-            if (name.isEmpty() || email.isEmpty() || pass.isEmpty() || verifyPass.isEmpty() || imageUri == null) {
+            if (name.isEmpty() || email.isEmpty() || pass.isEmpty() || verifyPass.isEmpty()) {
                 Toast.makeText(activity, "Please fill all requirements", Toast.LENGTH_SHORT).show()
             } else if (pass != verifyPass) {
                 binding.confirmPasswordEdt.error = "Confirmation password must match"
@@ -133,8 +134,6 @@ class RegistrationFragment : Fragment() {
                     dao.addUser(addUser)
 
                     Toast.makeText(context, "Registered Successfully", Toast.LENGTH_SHORT).show()
-//                    findNavController().navigate(R.id.action_registrationFragment_to_loginFragment)
-
                     sendEmailVerification(user)
 
                 } else {

@@ -5,19 +5,15 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Adapter
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.threadss.R
 import com.example.threadss.databinding.PostItemLayoutBinding
 import com.example.threadss.models.Post
+import com.example.threadss.utils.DUMMY_IMAGE
 import com.example.threadss.utils.GetTimeAgo
-import com.example.threadss.utils.IMAGE_HOLDER
-import com.example.threadss.utils.POST_NODE
 import com.example.threadss.utils.USER_NODE
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
@@ -41,7 +37,7 @@ class UserPostAdapter(
         holder.postBinding.createdAt.text = GetTimeAgo.getTimeAgo(post.createdAt)
         holder.postBinding.likeTxt.text = "${post.likeBy.size} likes"
 
-        if ( post.image != IMAGE_HOLDER){
+        if ( post.image != DUMMY_IMAGE){
             holder.postBinding.postImg.visibility = View.VISIBLE
             Glide.with(context).load(post.image).thumbnail(Glide.with(context).load(R.drawable.loading)).into(holder.postBinding.postImg)
         }
@@ -69,25 +65,23 @@ class UserPostAdapter(
         if (isLiked == true) {
             holder.postBinding.likeBtn.setImageResource(R.drawable.red_heart)
         }
-
-        // database instance
-        val db = Firebase.firestore
-        val currentPost = db.collection(POST_NODE).document(post.postDocID!!)
-
-//        // like button on click
-        holder.postBinding.likeBtn.setOnClickListener {
-
-                if (list[position].likeBy.contains(currentUser)) {
-                    currentPost.update("likeBy", FieldValue.arrayRemove(currentUser))
-                    holder.postBinding.likeBtn.setImageResource(R.drawable.like_off)
-                    Toast.makeText(context, "Like Removed", Toast.LENGTH_SHORT).show()
-                } else {
-                    currentPost.update("likeBy", FieldValue.arrayUnion(currentUser))
-                    holder.postBinding.likeBtn.setImageResource(R.drawable.red_heart)
-                    Toast.makeText(context, "Liked", Toast.LENGTH_SHORT).show()
-                }
-
-        }
+//
+//        // database instance
+//        val db = Firebase.firestore
+//        val currentPost = db.collection(POST_NODE).document(post.postDocID!!)
+//
+////        // like button on click
+//        holder.postBinding.likeBtn.setOnClickListener {
+//
+//                if (list[position].likeBy.contains(currentUser)) {
+//                    currentPost.update("likeBy", FieldValue.arrayRemove(currentUser))
+//                    holder.postBinding.likeBtn.setImageResource(R.drawable.like_off)
+//                } else {
+//                    currentPost.update("likeBy", FieldValue.arrayUnion(currentUser))
+//                    holder.postBinding.likeBtn.setImageResource(R.drawable.red_heart)
+//                }
+//
+//        }
 
 
         holder.postBinding.shareBtn.setOnClickListener {

@@ -12,6 +12,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import com.example.threadss.R
 import com.example.threadss.databinding.FragmentCreateThreadBinding
+import com.example.threadss.utils.DUMMY_IMAGE
 import com.example.threadss.utils.POST_IMAGE_FOLDER
 import com.example.threadss.utils.POST_NODE
 import com.example.threadss.utils.uploadImage
@@ -150,8 +151,7 @@ class CreateThreadFragment : Fragment() {
 
         }
             .addOnFailureListener {
-                Toast.makeText(requireContext(), "Error in uploading post.", Toast.LENGTH_SHORT)
-                    .show()
+                Toast.makeText(requireContext(), "Error in uploading post.", Toast.LENGTH_SHORT).show()
                 dialog.dismiss()
             }
     }
@@ -169,15 +169,13 @@ class CreateThreadFragment : Fragment() {
         val newDocRef: DocumentReference = db.collection(POST_NODE).document()
         val like: ArrayList<String> = ArrayList()
 
-        val image = "NO_IMAGE"
-
         val post = hashMapOf<String, Any>(
             "postDocID" to newDocRef.id,
             "postedBy" to currentUserId,
             "caption" to binding.postDesc.text.toString().trim(),
             "createdAt" to currentTime,
             "likeBy" to like,
-            "image" to image
+            "image" to DUMMY_IMAGE
         )
 
 

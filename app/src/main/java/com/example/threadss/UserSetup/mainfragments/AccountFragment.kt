@@ -8,9 +8,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.navigation.fragment.FragmentNavigatorExtras
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.threadss.R
+import com.example.threadss.activities.FollowerActivity
 import com.example.threadss.activities.SplashScreen
 import com.example.threadss.adapter.FireAdapter
 import com.example.threadss.daos.PostDao
@@ -33,7 +36,6 @@ class AccountFragment : Fragment() {
     private var profile: String? = null
     private lateinit var postDao: PostDao
 
-    private lateinit var myAdapter: FireAdapter
 
     private lateinit var dialog: Dialog
     private lateinit var logOutDialog: Dialog
@@ -63,7 +65,9 @@ class AccountFragment : Fragment() {
                     if (doc.exists()) {
                         name = doc.getString("userName")
                         profile = doc.getString("userProfile")
+                        val followers = doc.get("followers") as List<String>
 
+                        binding.textView8.text = "${followers.size} followers"
                         binding.userNameTxt.text = name.toString()
                         Glide.with(requireContext()).load(profile).into(binding.userImage)
                     }
@@ -71,11 +75,16 @@ class AccountFragment : Fragment() {
 
             }
 
+
         getCategoryFromFirebase()
 
         binding.logoutBtn.setOnClickListener {
             // dialog box
             showLogoutDialog()
+        }
+
+        binding.textView8.setOnClickListener {
+            startActivity(Intent(requireContext(), FollowerActivity::class.java))
         }
 
         return binding.root

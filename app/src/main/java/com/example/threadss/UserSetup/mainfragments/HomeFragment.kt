@@ -42,13 +42,12 @@ class HomeFragment : Fragment() {
         dialog.window?.setBackgroundDrawableResource(android.R.color.transparent);
         dialog.setCancelable(false)
 
-        lifecycleScope.launch {
-            setRecy()
-        }
+        setRecy()
 
 
         return binding.root
     }
+
     private fun setRecy() {
 
         dialog.show()
@@ -59,6 +58,7 @@ class HomeFragment : Fragment() {
         val query = postsCollections.orderBy("createdAt", Query.Direction.DESCENDING)
         val recyclerViewOptions =
             FirestoreRecyclerOptions.Builder<Post>().setQuery(query, Post::class.java).build()
+
 
         myAdapter = FireAdapter(recyclerViewOptions, requireContext())
 
@@ -73,13 +73,9 @@ class HomeFragment : Fragment() {
         myAdapter.startListening()
     }
 
-    override fun onStop() {
-        super.onStop()
-        myAdapter.stopListening()
-    }
-
     override fun onDestroyView() {
         super.onDestroyView()
+        myAdapter.stopListening()
         _binding = null
     }
 

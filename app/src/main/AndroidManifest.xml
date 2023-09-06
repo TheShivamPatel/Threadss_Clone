@@ -15,7 +15,10 @@
         android:theme="@style/Theme.Threadss"
         tools:targetApi="31">
         <activity
-            android:name=".UserProfileActivity"
+            android:name=".activities.FollowerActivity"
+            android:exported="false" />
+        <activity
+            android:name=".DetailProfileActivity"
             android:exported="false" />
         <activity
             android:name=".UserSetup.ProfileSetUpActivity"
