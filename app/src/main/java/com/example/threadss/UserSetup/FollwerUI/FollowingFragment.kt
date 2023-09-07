@@ -61,7 +61,7 @@ class FollowingFragment : Fragment() {
                     if (doc.exists()) {
                         following = doc.get("following") as ArrayList<*>
 
-                        binding.followingRv.adapter = FollowAdapter(requireContext(), following)
+                        binding.followingRv.adapter = FollowAdapter(requireContext(), following, 0)
 
                     }
                 }

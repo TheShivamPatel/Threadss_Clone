@@ -10,15 +10,14 @@ import com.example.threadss.utils.USER_NODE
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
-class FollowAdapter(private val context: Context, private val list: ArrayList<*>) :
+class FollowAdapter(private val context: Context, private val list: ArrayList<*> , private var i : Int) :
     RecyclerView.Adapter<FollowAdapter.followViewHolder>() {
 
     inner class followViewHolder(val binding: FollowerLayoutItemBinding) :
         RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): followViewHolder {
-        val view =
-            FollowerLayoutItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val view = FollowerLayoutItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return followViewHolder(view)
     }
 
@@ -26,7 +25,8 @@ class FollowAdapter(private val context: Context, private val list: ArrayList<*>
 
         holder.binding.apply {
 
-            val user = list
+            val user = list[i]
+            i++
             Firebase.firestore.collection(USER_NODE).document(user.toString()).get()
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {

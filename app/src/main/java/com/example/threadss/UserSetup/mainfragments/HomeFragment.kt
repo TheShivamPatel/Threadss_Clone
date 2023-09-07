@@ -56,9 +56,7 @@ class HomeFragment : Fragment() {
         postDao = PostDao()
         val postsCollections = postDao.postCollections
         val query = postsCollections.orderBy("createdAt", Query.Direction.DESCENDING)
-        val recyclerViewOptions =
-            FirestoreRecyclerOptions.Builder<Post>().setQuery(query, Post::class.java).build()
-
+        val recyclerViewOptions = FirestoreRecyclerOptions.Builder<Post>().setQuery(query, Post::class.java).build()
 
         myAdapter = FireAdapter(recyclerViewOptions, requireContext())
 

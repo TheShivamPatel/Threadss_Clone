@@ -16,7 +16,6 @@ class FollowerActivity : AppCompatActivity() {
         binding = ActivityFollowerBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-
         val adapter = ViewPagerAdapter(supportFragmentManager, lifecycle )
         binding.viewPager2.adapter = adapter
 

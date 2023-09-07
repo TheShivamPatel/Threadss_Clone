@@ -72,7 +72,7 @@ class FollowersFragment : Fragment() {
                             list.add(i.toString())
                         }
 
-                        binding.followerRv.adapter = FollowAdapter(requireContext(), list)
+                        binding.followerRv.adapter = FollowAdapter(requireContext(), list, 0)
                     }
                 }
 
