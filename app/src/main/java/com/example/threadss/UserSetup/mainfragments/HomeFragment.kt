@@ -6,17 +6,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.threadss.R
 import com.example.threadss.adapter.FireAdapter
 import com.example.threadss.daos.PostDao
-import com.example.threadss.adapter.UserPostAdapter
 import com.example.threadss.databinding.FragmentHomeBinding
 import com.example.threadss.models.Post
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.firestore.Query
-import kotlinx.coroutines.launch
 
 class HomeFragment : Fragment() {
 

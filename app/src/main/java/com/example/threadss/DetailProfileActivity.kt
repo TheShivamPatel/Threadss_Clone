@@ -8,12 +8,14 @@ import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
-import com.example.threadss.adapter.UserPostAdapter
+import com.example.threadss.adapter.FireAdapter
 import com.example.threadss.daos.PostDao
 import com.example.threadss.databinding.ActivityDetailProfileBinding
 import com.example.threadss.models.Post
+import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldValue
+import com.google.firebase.firestore.Query
 
 class DetailProfileActivity : AppCompatActivity() {
 
@@ -24,6 +26,7 @@ class DetailProfileActivity : AppCompatActivity() {
     private lateinit var dialog: Dialog
     private lateinit var postDao: PostDao
     private lateinit var myCurrentUserId: String
+    private lateinit var myAdapter: FireAdapter
 
     private var isIamFollowing = false
 
@@ -51,7 +54,8 @@ class DetailProfileActivity : AppCompatActivity() {
 
         getUserDetails(postedBy)
 
-        getCategoryFromFirebase(postedBy!!)
+
+        setRecy(postedBy!!)
 
         binding.followBtn.setOnClickListener {
 
@@ -61,8 +65,39 @@ class DetailProfileActivity : AppCompatActivity() {
 
     }
 
-    private fun getUserDetails(postedBy: String?) {
 
+    private fun setRecy(postedBy: String) {
+
+        dialog.show()
+
+
+        postDao = PostDao()
+        val postsCollections = postDao.postCollections
+        val query = postsCollections.orderBy("createdAt", Query.Direction.DESCENDING).whereEqualTo("postedBy" , postedBy)
+        val recyclerViewOptions = FirestoreRecyclerOptions.Builder<Post>().setQuery(query, Post::class.java).build()
+
+        myAdapter = FireAdapter(recyclerViewOptions, this)
+
+        binding.userPostRv.adapter = myAdapter
+        binding.userPostRv.layoutManager = LinearLayoutManager(this)
+
+        dialog.dismiss()
+    }
+
+
+    override fun onStart() {
+        super.onStart()
+        myAdapter.startListening()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        myAdapter.stopListening()
+    }
+
+
+
+    private fun getUserDetails(postedBy: String?) {
 
 
         postDao.userCollection.document(postedBy!!).get()
@@ -74,6 +109,7 @@ class DetailProfileActivity : AppCompatActivity() {
                     if (doc.exists()) {
                         name = doc.getString("userName")
                         profile = doc.getString("userProfile")
+                        val desc = doc.getString("profileDescription")
                         val followers = doc.get("followers") as List<String>
 
                         if (followers.contains(myCurrentUserId)) {
@@ -96,6 +132,7 @@ class DetailProfileActivity : AppCompatActivity() {
 
                         binding.textView8.text = "${followers.size} followers"
                         binding.userNameTxt.text = name.toString()
+                        binding.textView6.text = desc
                         Glide.with(this).load(profile).into(binding.userImage)
                     }
                 }
@@ -122,36 +159,6 @@ class DetailProfileActivity : AppCompatActivity() {
         }
 
         getUserDetails(postedBy)
-
-    }
-
-
-    private fun getCategoryFromFirebase(postedBy: String) {
-
-        dialog.show()
-
-        val postsCollections = this.postDao.postCollections
-
-        val list = ArrayList<Post>()
-
-        postsCollections.get().addOnSuccessListener {
-            list.clear()
-            for (doc in it.documents) {
-
-                val data = doc.toObject(Post::class.java)
-
-                if (data!!.postedBy.equals(postedBy)) {
-                    list.add(data!!)
-                }
-            }
-            list.sortByDescending {
-                it.createdAt
-            }
-            binding.userPostRv.adapter = UserPostAdapter(this, list)
-            binding.userPostRv.layoutManager = LinearLayoutManager(this)
-
-            dialog.dismiss()
-        }
 
     }
 

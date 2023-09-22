@@ -86,7 +86,6 @@ class RegistrationFragment : Fragment() {
             } else if (pass != verifyPass) {
                 binding.confirmPasswordEdt.error = "Confirmation password must match"
             } else {
-
                 // Register the user to firebase
                 uploadImageToFirebase(name, email, pass)
             }

@@ -60,7 +60,6 @@ class FollowingFragment : Fragment() {
                     val doc = task.result
                     if (doc.exists()) {
                         following = doc.get("following") as ArrayList<*>
-
                         binding.followingRv.adapter = FollowAdapter(requireContext(), following, 0)
 
                     }

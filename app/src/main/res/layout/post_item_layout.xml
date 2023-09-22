@@ -66,11 +66,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginLeft="15dp"
+                    android:layout_marginStart="15dp"
                     android:layout_weight="12"
                     android:text="time ago"
-                    android:gravity="center"
-                    android:textSize="12dp"
+                    android:gravity="end"
+                    android:paddingEnd="15dp"
+                    android:textSize="12sp"
                     android:textColor="@color/gray"
                     />
 
@@ -79,8 +80,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="22dp"
                     android:src="@drawable/baseline_more_horiz_24"
-                    android:layout_gravity=""
-                    android:layout_weight="17"/>
+                    android:layout_weight="17"
+                    android:visibility="gone"/>
 
 
             </LinearLayout>
@@ -97,23 +98,15 @@
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/post_img"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
                 android:maxHeight="250dp"
+                android:layout_marginEnd="25dp"
                 android:adjustViewBounds="true"
                 android:layout_marginTop="20dp"
                 android:visibility="gone"
                 android:scaleType="centerCrop"
                 app:shapeAppearanceOverlay="@style/Smooth_corners"/>
-
-<!--            <androidx.recyclerview.widget.RecyclerView-->
-<!--                android:id="@+id/multi_image_rv"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="200dp"-->
-<!--                android:layout_marginTop="20dp"-->
-<!--                android:layout_marginEnd="20dp"-->
-<!--                android:visibility="gone">-->
-<!--            </androidx.recyclerview.widget.RecyclerView>-->
 
             <LinearLayout
                 android:layout_width="match_parent"

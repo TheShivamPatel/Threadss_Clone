@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/light_gray"
-    tools:context=".UserSetup.SetUpFragments.RegistrationFragment">
+    tools:context=".activities.EditProfileActivity">
 
 
     <TextView
@@ -15,35 +15,35 @@
         android:layout_marginStart="25dp"
         android:layout_marginTop="40dp"
         android:fontFamily="@font/open_sans_bold"
-        android:text="Signup"
+        android:text="Edit Profile"
         android:textColor="@color/black"
-        android:textSize="40sp"
+        android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/profile_image"
         android:layout_width="100dp"
         android:layout_height="100dp"
+        android:layout_marginTop="60dp"
         android:padding="2dp"
-        android:layout_marginTop="90dp"
         android:scaleType="centerCrop"
         android:src="@drawable/image_holder"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView4"
         app:shapeAppearanceOverlay="@style/Circle"
         app:strokeColor="@color/gray"
         app:strokeWidth="1dp" />
 
-
     <EditText
         android:id="@+id/user_name_edt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="25dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="25dp"
         android:background="@drawable/edt_bg"
         android:backgroundTint="@color/white"
         android:fontFamily="@font/open_sans"
@@ -58,79 +58,44 @@
 
 
     <EditText
-        android:id="@+id/email_edt"
+        android:id="@+id/profile_desc"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="25dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="25dp"
         android:background="@drawable/edt_bg"
         android:backgroundTint="@color/white"
         android:fontFamily="@font/open_sans"
-        android:hint="Enter your email"
-        android:inputType="textEmailAddress"
+        android:hint="Add profile description"
         android:padding="10dp"
         android:textColor="@color/black"
         android:textSize="17sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.68"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/user_name_edt" />
 
 
-    <EditText
-        android:id="@+id/password_edt"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="25dp"
-        android:layout_marginTop="25dp"
-        android:layout_marginRight="25dp"
-        android:background="@drawable/edt_bg"
-        android:backgroundTint="@color/white"
-        android:fontFamily="@font/open_sans"
-        android:hint="Create your password"
-        android:inputType="textPassword"
-        android:padding="10dp"
-        android:textColor="@color/black"
-        android:textSize="17sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/email_edt" />
-
-    <EditText
-        android:id="@+id/confirm_password_edt"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="25dp"
-        android:background="@drawable/edt_bg"
-        android:backgroundTint="@color/white"
-        android:fontFamily="@font/open_sans"
-        android:hint="Confirm your password"
-        android:inputType="textPassword"
-        android:padding="10dp"
-        android:textColor="@color/black"
-        android:textSize="17sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/password_edt" />
-
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/register_btn"
+        android:id="@+id/update_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="25dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginEnd="25dp"
+        android:layout_marginBottom="70dp"
         android:backgroundTint="#024ff5"
         android:fontFamily="@font/open_sans_bold"
         android:paddingStart="50dp"
         android:paddingEnd="50dp"
-        android:text="Create Profile"
+        android:text="Update Profile"
         android:textColor="@color/white"
         android:textSize="20sp"
         app:cornerRadius="12dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/confirm_password_edt" />
+        app:layout_constraintStart_toStartOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

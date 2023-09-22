@@ -1,5 +1,6 @@
 package com.example.threadss.adapter
 
+import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
@@ -22,12 +23,12 @@ import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
+
 class FireAdapter(options: FirestoreRecyclerOptions<Post>, val context: Context) :
     FirestoreRecyclerAdapter<Post, FireAdapter.postHolder>(
         options
     ) {
-    class postHolder(val binding: PostItemLayoutBinding) :
-        RecyclerView.ViewHolder(binding.root)
+    class postHolder(val binding: PostItemLayoutBinding) : RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): postHolder {
         val view = PostItemLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -41,11 +42,12 @@ class FireAdapter(options: FirestoreRecyclerOptions<Post>, val context: Context)
             createdAt.text = GetTimeAgo.getTimeAgo(model.createdAt)
             likeTxt.text = "${model.likeBy.size} likes"
 
-
             if (model.image != DUMMY_IMAGE) {
                 postImg.visibility = View.VISIBLE
                 Glide.with(context).load(model.image)
                     .thumbnail(Glide.with(context).load(R.drawable.loading)).into(postImg)
+            } else {
+                postImg.visibility = View.GONE
             }
 
 
@@ -76,7 +78,7 @@ class FireAdapter(options: FirestoreRecyclerOptions<Post>, val context: Context)
             val db = Firebase.firestore
             val currentPost = db.collection(POST_NODE).document(model.postDocID!!)
 
-//        // like button on click
+            // like button on click
             likeBtn.setOnClickListener {
 
                 if (isLiked) {
