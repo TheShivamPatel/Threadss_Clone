@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
@@ -37,6 +38,7 @@ class AccountFragment : Fragment() {
     private lateinit var myAdapter : FireAdapter
 
 
+    private lateinit var imageBoxDialog: Dialog
     private lateinit var dialog: Dialog
     private lateinit var logOutDialog: Dialog
 
@@ -51,6 +53,13 @@ class AccountFragment : Fragment() {
         dialog.setContentView(R.layout.progress_layout)
         dialog.window?.setBackgroundDrawableResource(android.R.color.transparent);
         dialog.setCancelable(false)
+
+
+        // progress dialog box
+        imageBoxDialog = Dialog(requireContext())
+        imageBoxDialog.setContentView(R.layout.image_dialogbox)
+        imageBoxDialog.window?.setBackgroundDrawableResource(android.R.color.transparent);
+        imageBoxDialog.setCancelable(true)
 
 
         /// get my all details
@@ -71,6 +80,8 @@ class AccountFragment : Fragment() {
                         binding.userNameTxt.text = name.toString()
                         binding.textView6.text = desc
                         Glide.with(requireContext()).load(profile).into(binding.userImage)
+                        val imageProfile = imageBoxDialog.findViewById<ImageView>(R.id.image_profile_link)
+                        Glide.with(this).load(profile).into(imageProfile)
                     }
                 }
 
@@ -86,6 +97,10 @@ class AccountFragment : Fragment() {
             }
             val shareIntent = Intent.createChooser(sendIntent, null)
             startActivity(shareIntent)
+        }
+
+        binding.userImage.setOnClickListener {
+            imageBoxDialog.show()
         }
 
 
