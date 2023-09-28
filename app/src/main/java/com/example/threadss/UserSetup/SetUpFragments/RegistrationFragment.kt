@@ -16,9 +16,9 @@ import com.example.threadss.daos.UserDao
 import com.example.threadss.databinding.FragmentRegistrationBinding
 import com.example.threadss.models.User
 import com.example.threadss.utils.DUMMY_PROFILE
-import com.example.threadss.utils.POST_IMAGE_FOLDER
 import com.example.threadss.utils.USER_PROFILE_FOLDER
 import com.example.threadss.utils.uploadImage
+import com.example.threadss.utils.uploadImageToFirebaseCompres
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -27,10 +27,7 @@ class RegistrationFragment : Fragment() {
 
     private var _binding: FragmentRegistrationBinding? = null
     private val binding get() = _binding!!
-
-
     private lateinit var dialog: Dialog
-
     private lateinit var auth: FirebaseAuth
     private lateinit var imageUri: Uri
     private lateinit var imageUrl: String
@@ -104,7 +101,7 @@ class RegistrationFragment : Fragment() {
             registerUser(name, email, pass, DUMMY_PROFILE)
         } else {
 
-            uploadImage(imageUri, USER_PROFILE_FOLDER) {
+            uploadImageToFirebaseCompres(imageUri , requireActivity().contentResolver, requireContext(), USER_PROFILE_FOLDER){
                 if (it == null) {
                     Toast.makeText(activity, "Error in uploading image!", Toast.LENGTH_SHORT).show()
                 } else {

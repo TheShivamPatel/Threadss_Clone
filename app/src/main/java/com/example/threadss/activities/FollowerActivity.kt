@@ -16,6 +16,8 @@ class FollowerActivity : AppCompatActivity() {
         binding = ActivityFollowerBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        binding.textView5.text = intent.getStringExtra("userId")
+
         val adapter = ViewPagerAdapter(supportFragmentManager, lifecycle )
         binding.viewPager2.adapter = adapter
 

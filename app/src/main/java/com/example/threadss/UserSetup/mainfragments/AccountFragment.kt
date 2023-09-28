@@ -103,7 +103,10 @@ class AccountFragment : Fragment() {
         }
 
         binding.textView8.setOnClickListener {
-            startActivity(Intent(requireContext(), FollowerActivity::class.java))
+//            startActivity(Intent(requireContext(), FollowerActivity::class.java))
+            val intent = Intent(requireContext(), FollowerActivity::class.java)
+            intent.putExtra("userId", name)
+            startActivity(intent)
         }
 
         return binding.root
