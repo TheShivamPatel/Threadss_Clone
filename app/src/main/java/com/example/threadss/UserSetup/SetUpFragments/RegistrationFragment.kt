@@ -15,6 +15,8 @@ import com.example.threadss.R
 import com.example.threadss.daos.UserDao
 import com.example.threadss.databinding.FragmentRegistrationBinding
 import com.example.threadss.models.User
+import com.example.threadss.utils.DUMMY_PROFILE
+import com.example.threadss.utils.POST_IMAGE_FOLDER
 import com.example.threadss.utils.USER_PROFILE_FOLDER
 import com.example.threadss.utils.uploadImage
 import com.google.android.gms.tasks.OnCompleteListener
@@ -32,6 +34,7 @@ class RegistrationFragment : Fragment() {
     private lateinit var auth: FirebaseAuth
     private lateinit var imageUri: Uri
     private lateinit var imageUrl: String
+    private var imagePick = false
 
     // Registers a photo picker activity launcher in single-select mode.
     private val pickMedia =
@@ -40,6 +43,7 @@ class RegistrationFragment : Fragment() {
                 imageUri = uri
                 binding.profileImage.setImageURI(uri)
                 Toast.makeText(activity, "Image Set!", Toast.LENGTH_SHORT).show()
+                imagePick = true
             } else {
                 Toast.makeText(activity, "Error in picking image!", Toast.LENGTH_SHORT).show()
             }
@@ -69,8 +73,6 @@ class RegistrationFragment : Fragment() {
         }
 
 
-
-
         // Initialize Firebase Auth
         auth = FirebaseAuth.getInstance()
 
@@ -96,22 +98,27 @@ class RegistrationFragment : Fragment() {
     }
 
     private fun uploadImageToFirebase(name: String, email: String, pass: String) {
-
         dialog.show()
 
-        uploadImage(imageUri, USER_PROFILE_FOLDER) {
-            if (it == null) {
-                Toast.makeText(activity, "Error in uploading image!", Toast.LENGTH_SHORT).show()
-            } else {
-                try {
-                    imageUrl = it
-                    Toast.makeText(activity, "Image Uploaded to storage!", Toast.LENGTH_SHORT)
-                        .show()
-                    registerUser(name, email, pass)
-                } catch (e: Exception) {
-                    Toast.makeText(activity, e.message.toString(), Toast.LENGTH_SHORT).show()
+        if (!imagePick) {
+            registerUser(name, email, pass, DUMMY_PROFILE)
+        } else {
+
+            uploadImage(imageUri, USER_PROFILE_FOLDER) {
+                if (it == null) {
+                    Toast.makeText(activity, "Error in uploading image!", Toast.LENGTH_SHORT).show()
+                } else {
+                    try {
+                        imageUrl = it
+                        Toast.makeText(activity, "Image Uploaded to storage!", Toast.LENGTH_SHORT)
+                            .show()
+                        registerUser(name, email, pass , it)
+                    } catch (e: Exception) {
+                        Toast.makeText(activity, e.message.toString(), Toast.LENGTH_SHORT).show()
+                    }
                 }
             }
+
         }
 
     }
@@ -120,7 +127,7 @@ class RegistrationFragment : Fragment() {
 // =======================================================================================
 //    =========================================================================================================
 
-    private fun registerUser(name: String, email: String, pass: String) {
+    private fun registerUser(name: String, email: String, pass: String , image : String) {
 
         auth.createUserWithEmailAndPassword(email, pass)
             .addOnCompleteListener(OnCompleteListener { task ->
@@ -128,7 +135,7 @@ class RegistrationFragment : Fragment() {
                     val user = auth.currentUser
 
                     // Verification mail sent
-                    val addUser = User(user!!.uid, name, imageUrl)
+                    val addUser = User(user!!.uid, name, image)
                     val dao = UserDao()
                     dao.addUser(addUser)
 
