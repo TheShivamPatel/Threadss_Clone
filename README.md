@@ -1,4 +1,15 @@
 # Threads Clone
+Threadss is where communities come together to discuss everything from the topics you care about today to what’ll be trending tomorrow. Whatever it is you’re interested in, you can follow and connect directly with your favorite creators and others who love the same things — or build a loyal following of your own to share your ideas, opinions and creativity with the world.
+
+## Features
+* User Authentication
+* Post Feed
+* Post Creation
+* Post Sharing
+* User Following
+* User Unfollowing
+* Like Post
+* Unlike Post
 
 ## Tools and Tech stack used :
 * Kotlin
@@ -13,4 +24,5 @@
 ![threads3](https://github.com/TheShivamPatel/Threadss_Clone/assets/110902638/d20ddacd-6123-4825-9401-35c153e8b5dc)
 ![threads33](https://github.com/TheShivamPatel/Threadss_Clone/assets/110902638/68483811-4330-40e4-90f4-fb0a8118fb8d)
 ![threads7](https://github.com/TheShivamPatel/Threadss_Clone/assets/110902638/1bbf2f4c-6595-4d16-96f3-f21011f8fd38)
+![threads9](https://github.com/TheShivamPatel/Threadss_Clone/assets/110902638/d8bbaf36-f1af-4b13-82d7-9473577bb03a)
 
